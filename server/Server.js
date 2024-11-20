@@ -47,18 +47,15 @@ app.put("/update-task/:id", async (req, res) => {
     const { name, cost, deadline } = req.body;
 
     // Verificar duplicidade de nome
-    const snapshot = await db
-      .collection("tasks")
-      .where("name", "==", name)
-      .where("id", "!=", parseInt(id)) // Excluir a tarefa atual
-      .get();
+    const snapshot = await db.collection("tasks").where("name", "==", name).get();
 
     if (!snapshot.empty) {
-      return res
-        .status(400)
-        .send({ error: "Já existe uma tarefa com este nome." });
+      const isDuplicate = snapshot.docs.some((doc) => doc.data().id !== parseInt(id));
+    
+      if (isDuplicate) {
+        return res.status(400).send({ error: "Já existe uma tarefa com este nome." });
+      }
     }
-
     // Buscar documento pelo campo 'id'
     const taskSnapshot = await db
       .collection("tasks")

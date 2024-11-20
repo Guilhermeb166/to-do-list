@@ -18,7 +18,6 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
   }, [taskToEdit]);
 
   const handleAddTask = async () => {
-    
     try {
       const response = await axios.post("http://localhost:3001/add-task", {
         name: task,
@@ -69,6 +68,44 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
     }
   };
 
+  const handleDateChange = (e) => {
+    let input = e.target.value;
+  
+    // Permitir apenas números e barras
+    input = input.replace(/[^0-9/]/g, "");
+  
+    // Adicionar barras automaticamente no formato DD/MM/YYYY
+    if (input.length === 2 || input.length === 5) {
+      input += "/";
+    }
+  
+    if (input.length > 10) {
+      // Limitar o comprimento máximo para DD/MM/YYYY
+      input = input.slice(0, 10);
+    }
+  
+    // Validar formato final
+    const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/; // Formato DD/MM/YYYY
+    const match = input.match(dateRegex);
+  
+    if (match) {
+      const day = parseInt(match[1], 10);
+      const month = parseInt(match[2], 10);
+      const year = parseInt(match[3], 10);
+  
+      if (
+        day < 1 || day > 31 || // Dias válidos
+        month < 1 || month > 12 || // Meses válidos
+        year < 1950 || year > 2100 // Ano no intervalo permitido
+      ) {
+        alert("Insira um ano válido entre 1950 e 2100.");
+        return;
+      }
+    }
+  
+    setDeadline(input); // Atualizar o estado com a entrada válida
+  };
+
   return (
     <div className={styles.backdrop}>
       <div className={styles.modalContent}>
@@ -85,11 +122,11 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
           value={cost}
           onChange={(e) => setCost(e.target.value)}
         />
-        <input
-          type="date"
-          placeholder="Data Limite"
+         <input
+          type="text"
+          placeholder="DD/MM/YYYY"
           value={deadline}
-          onChange={(e) => setDeadline(e.target.value)}
+          onChange={handleDateChange}
         />
         <div className={styles.modalActions}>
           <button onClick={onClose}>Cancelar</button>
