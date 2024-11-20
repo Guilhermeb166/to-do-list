@@ -17,16 +17,17 @@ export default function Table() {
   // Carregar tarefas do backend
   const fetchTasks = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/tasks");
+      // Altere a URL para o endpoint correto do seu backend
+      const response = await axios.get("https://to-do-list-vhdd.onrender.com/tasks");
       setTasks(response.data);
     } catch (error) {
       console.error("Erro ao carregar tarefas: ", error);
     }
   };
-
+  
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, []); // Este useEffect garante que a função seja chamada apenas uma vez quando o componente é montado.
 
   function GrowTransition(props) {
     return <Grow {...props} />;
