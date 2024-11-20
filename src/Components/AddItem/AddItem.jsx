@@ -77,37 +77,50 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
     // Permitir apenas números e barras
     input = input.replace(/[^0-9/]/g, "");
   
-    // Adicionar barras automaticamente no formato DD/MM/YYYY
-    if (input.length === 2 || input.length === 5) {
-      input += "/";
+    // Corrigir automaticamente os valores de dia e mês
+    const dateParts = input.split('/');
+    let day = dateParts[0] || "";
+    let month = dateParts[1] || "";
+    let year = dateParts[2] || "";
+  
+    // Ajuste do dia e do mês se necessário
+    if (day.length === 2) {
+      if (parseInt(day, 10) > 31) day = "31";
+    }
+    if (month.length === 2) {
+      if (parseInt(month, 10) > 12) month = "12";
     }
   
+    // Formatar o input enquanto o usuário digita
+    if (day.length === 2 && input.length === 2 && e.nativeEvent.inputType !== 'deleteContentBackward') {
+      input = `${day}/`;
+    } else if (month.length === 2 && input.length === 5 && e.nativeEvent.inputType !== 'deleteContentBackward') {
+      input = `${day}/${month}/`;
+    } else {
+      input = `${day}${month ? '/' + month : ''}${year ? '/' + year : ''}`;
+    }
+  
+    // Limitar o comprimento máximo para DD/MM/YYYY
     if (input.length > 10) {
-      // Limitar o comprimento máximo para DD/MM/YYYY
       input = input.slice(0, 10);
     }
   
-    // Validar formato final
-    const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/; // Formato DD/MM/YYYY
-    const match = input.match(dateRegex);
-  
-    if (match) {
-      const day = parseInt(match[1], 10);
-      const month = parseInt(match[2], 10);
-      const year = parseInt(match[3], 10);
-  
-      if (
-        day < 1 || day > 31 || // Dias válidos
-        month < 1 || month > 12 || // Meses válidos
-        year < 1950 || year > 2100 // Ano no intervalo permitido
-      ) {
-        alert("Insira um ano válido entre 1950 e 2100.");
-        return;
+    // Validar o ano quando for completo
+    if (year.length === 4) {
+      const numericYear = parseInt(year, 10);
+      if (numericYear < 1950) {
+        year = "1950";
+      } else if (numericYear > 2100) {
+        year = "2100";
       }
+      input = `${day}/${month}/${year}`;
     }
   
     setDeadline(input); // Atualizar o estado com a entrada válida
   };
+  
+  
+  
 
   return (
     <div className={styles.backdrop}>
