@@ -44,7 +44,7 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
 
         // Verificar se o nome da tarefa já existe
         //const response = await axios.get("http://localhost:3001/tasks");
-        const response = await axios.get("https://to-do-list-vhdd.onrender.com//tasks");
+        const response = await axios.get("https://to-do-list-vhdd.onrender.com/tasks");
         const taskExists = response.data.some(
           (t) => t.name === task && t.id !== taskToEdit.id
         );
