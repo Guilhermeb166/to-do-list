@@ -19,7 +19,8 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
 
   const handleAddTask = async () => {
     try {
-      const response = await axios.post("http://localhost:3001/add-task", {
+      //const response = await axios.post("http://localhost:3001/add-task", 
+      const response = await axios.post("https://to-do-list-vhdd.onrender.com/add-task", {
         name: task,
         cost: parseFloat(cost),
         deadline,
@@ -42,7 +43,8 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
         };
 
         // Verificar se o nome da tarefa já existe
-        const response = await axios.get("http://localhost:3001/tasks");
+        //const response = await axios.get("http://localhost:3001/tasks");
+        const response = await axios.get("https://to-do-list-vhdd.onrender.com//tasks");
         const taskExists = response.data.some(
           (t) => t.name === task && t.id !== taskToEdit.id
         );
@@ -53,7 +55,8 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
         }
 
         // Atualizar no backend
-        await axios.put(`http://localhost:3001/update-task/${taskToEdit.id}`, updatedTask);
+        //await axios.put(`http://localhost:3001/update-task/${taskToEdit.id}`, updatedTask);
+        await axios.put(`https://to-do-list-vhdd.onrender.com/update-task/${taskToEdit.id}`, updatedTask);
 
         // Atualizar a lista no componente pai
         onEdit(taskToEdit.id, updatedTask);

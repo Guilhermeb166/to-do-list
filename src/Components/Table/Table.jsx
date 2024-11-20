@@ -33,7 +33,8 @@ export default function Table() {
   }
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/delete-task/${id}`);
+     // await axios.delete(`http://localhost:3001/delete-task/${id}`);
+      await axios.delete(`https://to-do-list-vhdd.onrender.com/delete-task/${id}`);
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
     } catch (error) {
       console.error("Erro ao excluir tarefa:", error);
