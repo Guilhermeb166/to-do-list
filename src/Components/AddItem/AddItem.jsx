@@ -18,6 +18,7 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
   }, [taskToEdit]);
 
   const handleAddTask = async () => {
+    
     try {
       const response = await axios.post("http://localhost:3001/add-task", {
         name: task,
