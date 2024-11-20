@@ -124,7 +124,7 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
         />
          <input
           type="text"
-          placeholder="DD/MM/YYYY"
+          placeholder="Data Limite"
           value={deadline}
           onChange={handleDateChange}
         />
