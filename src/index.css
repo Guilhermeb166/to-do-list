@@ -1,0 +1,15 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent; /* Remove o destaque azul no Android */
+}
+
+/* removem os botões de incremento e decremento nos navegadores WebKit (como Chrome e Safari) e também em navegadores que usam o motor Gecko (como Firefox).*/
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button,input[type="number"] {
+    -webkit-appearance: none;/* Para navegadores baseados em WebKit, como Chrome e Safari */
+    -moz-appearance: textfield; /* Para navegadores baseados em Gecko, como Firefox */
+    appearance: none; /* Para navegadores modernos que suportam a versão padrão */
+    margin: 0;
+}

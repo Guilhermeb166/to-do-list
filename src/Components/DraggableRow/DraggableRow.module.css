@@ -1,0 +1,30 @@
+.line{
+    &:active{
+        cursor: pointer;
+    }
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #6a6a6a7f;
+    text-align: center;
+}
+.actions{
+    display: flex;
+    justify-content: center;
+
+    .iconsActions{
+        background-color: transparent;
+        border: none;
+        margin: 0 auto;
+
+        .icons{
+            cursor: pointer;
+            font-size: 20px;
+            &:hover{
+                transform: scale(1.3);
+                transition: all .4s linear;
+            }
+        }
+    }
+}
