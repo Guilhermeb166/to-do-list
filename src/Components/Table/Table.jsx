@@ -18,7 +18,7 @@ export default function Table() {
   const fetchTasks = async () => {
     try {
       // Altere a URL para o endpoint correto do seu backend
-      const response = await axios.get("https://to-do-list-backend-pied.vercel.app/tasks");
+      const response = await axios.get("https://to-do-list-vhdd.onrender.com/tasks");
       setTasks(response.data);
     } catch (error) {
       console.error("Erro ao carregar tarefas: ", error);
@@ -35,7 +35,7 @@ export default function Table() {
   const handleDelete = async (id) => {
     try {
      // await axios.delete(`http://localhost:3001/delete-task/${id}`);
-      await axios.delete(`https://to-do-list-backend-pied.vercel.app/delete-task/${id}`);
+      await axios.delete(`https://to-do-list-vhdd.onrender.com/delete-task/${id}`);
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
     } catch (error) {
       console.error("Erro ao excluir tarefa:", error);
@@ -56,7 +56,7 @@ export default function Table() {
     try {
       await Promise.all(
         updatedTasks.map((task) =>
-          axios.put(`https://to-do-list-backend-pied.vercel.app/update-task/${task.id}`, { ...task })
+          axios.put(`https://to-do-list-vhdd.onrender.com/update-task/${task.id}`, { ...task })
         )
       );
     } catch (error) {
