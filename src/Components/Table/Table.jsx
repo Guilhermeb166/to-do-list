@@ -13,6 +13,9 @@ export default function Table() {
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [deleteSnackbarOpen, setDeleteSnackbarOpen] = useState(false);// Novo estado para o snackbar de exclusão
+  const [deleteSnackbarMessage, setDeleteSnackbarMessage] = useState("");
 
   // Carregar tarefas do backend
   const fetchTasks = async () => {
@@ -37,6 +40,9 @@ export default function Table() {
      // await axios.delete(`http://localhost:3001/delete-task/${id}`);
       await axios.delete(`https://to-do-list-vhdd.onrender.com/delete-task/${id}`);
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+         // Configuração do snackbar para a confirmação de exclusão
+         setDeleteSnackbarMessage("Tarefa excluída com sucesso!");
+         setDeleteSnackbarOpen(true);
     } catch (error) {
       console.error("Erro ao excluir tarefa:", error);
     }
@@ -107,7 +113,9 @@ export default function Table() {
             }}
             onAdd={(newTask) => {
               setTasks((prevTasks) => [...prevTasks, newTask]);
+              // Configuração do snackbar para confirmação de adição
               setSnackbarMessage("Tarefa adicionada com sucesso!");
+              setSnackbarSeverity("success"); // Verde para sucesso
               setSnackbarOpen(true);
               setShowModal(false);
             }}
@@ -123,6 +131,7 @@ export default function Table() {
           />
         )}
 
+        {/* Snackbar para adição de tarefa */}
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={3000}
@@ -132,10 +141,27 @@ export default function Table() {
         >
           <Alert
             onClose={() => setSnackbarOpen(false)}
-            severity="success"
-            sx={{ width: "100%" }}
+            severity={snackbarSeverity}
+            sx={{ width: "100%", backgroundColor: snackbarSeverity === "success" ? "#35AB54" : undefined }}
           >
             {snackbarMessage}
+          </Alert>
+        </Snackbar>
+
+        {/* Snackbar para exclusão de tarefa */}
+        <Snackbar
+          open={deleteSnackbarOpen}
+          autoHideDuration={3000}
+          onClose={() => setDeleteSnackbarOpen(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          TransitionComponent={GrowTransition}
+        >
+          <Alert
+            onClose={() => setDeleteSnackbarOpen(false)}
+            severity="error" // Vermelho para erro ou exclusão
+            sx={{ width: "100%", backgroundColor: "red" }}
+          >
+            {deleteSnackbarMessage}
           </Alert>
         </Snackbar>
       </section>
