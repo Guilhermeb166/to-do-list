@@ -1,9 +1,19 @@
 //server.js
 const express = require("express");
 const cors = require("cors");
+const helmet = require("helmet");
 const db = require("../Firebase/FirebaseConfig"); // Importando o Firestore já configurado no arquivo externo
 
 const app = express();
+// Usar helmet para adicionar a política CSP
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "https://vercel.live"],
+    },
+  })
+);
 app.use(cors());
 app.use(express.json());
 
@@ -50,13 +60,20 @@ app.put("/update-task/:id", async (req, res) => {
     const { name, cost, deadline } = req.body;
 
     // Verificar duplicidade de nome
-    const snapshot = await db.collection("tasks").where("name", "==", name).get();
+    const snapshot = await db
+      .collection("tasks")
+      .where("name", "==", name)
+      .get();
 
     if (!snapshot.empty) {
-      const isDuplicate = snapshot.docs.some((doc) => doc.data().id !== parseInt(id));
-    
+      const isDuplicate = snapshot.docs.some(
+        (doc) => doc.data().id !== parseInt(id)
+      );
+
       if (isDuplicate) {
-        return res.status(400).send({ error: "Já existe uma tarefa com este nome." });
+        return res
+          .status(400)
+          .send({ error: "Já existe uma tarefa com este nome." });
       }
     }
     // Buscar documento pelo campo 'id'
