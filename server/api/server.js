@@ -1,3 +1,4 @@
+//server.js
 const express = require("express");
 const cors = require("cors");
 const db = require("./Firebase/FirebaseConfig"); // Importando o Firestore já configurado no arquivo externo
