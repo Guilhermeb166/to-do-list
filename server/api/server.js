@@ -113,8 +113,12 @@ app.get("/tasks", async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 });
+
+// Exportar o aplicativo como manipulador
+module.exports = app;
 // Iniciar o servidor
-const PORT = 3001;
+/*const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+*/
