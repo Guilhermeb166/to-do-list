@@ -26,7 +26,7 @@ export default function Table() {
   const fetchTasks = async () => {
     try {
       // Altere a URL para o endpoint correto do seu backend
-      const response = await axios.get("https://to-do-list-vhdd.onrender.com/tasks");
+      const response = await axios.get("https://to-do-list-backend-gray.vercel.app/tasks");
       setTasks(response.data);
     } catch (error) {
       console.error("Erro ao carregar tarefas: ", error);
@@ -43,7 +43,7 @@ export default function Table() {
   const handleDelete = async (id) => {
     try {
      // await axios.delete(`http://localhost:3001/delete-task/${id}`);
-      await axios.delete(`https://to-do-list-vhdd.onrender.com/delete-task/${id}`);
+      await axios.delete(`https://to-do-list-backend-gray.vercel.app/delete-task/${id}`);
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
          // Configuração do snackbar para a confirmação de exclusão
          setDeleteSnackbarMessage("Tarefa excluída com sucesso!");
@@ -67,7 +67,7 @@ export default function Table() {
     try {
       await Promise.all(
         updatedTasks.map((task) =>
-          axios.put(`https://to-do-list-vhdd.onrender.com/update-task/${task.id}`, { ...task })
+          axios.put(`https://to-do-list-backend-gray.vercel.app/update-task/${task.id}`, { ...task })
         )
       );
     } catch (error) {

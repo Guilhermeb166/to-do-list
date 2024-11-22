@@ -34,7 +34,7 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
       return; // Interrompe a execução caso algum campo esteja vazio
     }
     try {
-      const response = await axios.post("https://to-do-list-vhdd.onrender.com/add-task", {
+      const response = await axios.post("https://to-do-list-backend-gray.vercel.app/add-task", {
         name: task,
         cost, // Envia o valor numérico correto
         deadline,
@@ -55,7 +55,7 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
           deadline,
         };
   
-        const response = await axios.get("https://to-do-list-vhdd.onrender.com/tasks");
+        const response = await axios.get("https://to-do-list-backend-gray.vercel.app/tasks");
         const taskExists = response.data.some(
           (t) => t.name === task && t.id !== taskToEdit.id
         );
@@ -65,7 +65,7 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
           return;
         }
   
-        await axios.put(`https://to-do-list-vhdd.onrender.com/update-task/${taskToEdit.id}`, updatedTask);
+        await axios.put(`https://to-do-list-backend-gray.vercel.app/update-task/${taskToEdit.id}`, updatedTask);
         onEdit(taskToEdit.id, updatedTask);
         onClose();
       } catch (error) {
