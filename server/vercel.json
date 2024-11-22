@@ -11,5 +11,9 @@
         "src": "/(.*)",
         "dest": "api/server.js"
       }
-    ]
+    ],
+    "rewrites": [
+    { "source": "/favicon.ico", "destination": "/public/favicon.ico" },
+    { "source": "/favicon.png", "destination": "/public/favicon.png" }
+  ]
   }
