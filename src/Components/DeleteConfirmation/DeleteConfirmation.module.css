@@ -27,19 +27,29 @@
   }
   
   .confirmButton {
-    background-color: #d9534f;
+    background-color: #41b6d9;
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
+
+    &:hover{
+      transform: scale(1.2);
+      transition: all .3s ease;
+    }
   }
   
   .cancelButton {
-    background-color: #5bc0de;
+    background-color: #e72b25;
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
+
+    &:hover{
+      transform: scale(1.2);
+      transition: all .3s ease;
+    }
   }

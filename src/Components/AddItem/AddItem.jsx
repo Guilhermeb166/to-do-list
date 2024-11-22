@@ -7,26 +7,35 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
   const [task, setTask] = useState("");
   const [cost, setCost] = useState("");
   const [deadline, setDeadline] = useState("");
+  const [costValue, setCostValue] = useState(
+    task.cost ? task.cost.toFixed(2) : "" // Verifica se task.cost existe
+  );
 
-  // Preencher os campos caso seja edição
+
+  // Preencher os valores do modal ao editar
   useEffect(() => {
     if (taskToEdit) {
-      setTask(taskToEdit.name);
-      setCost(taskToEdit.cost.toString());
-      setDeadline(taskToEdit.deadline);
+      setTask(taskToEdit.name || "");
+      setCost(taskToEdit.cost || 0); // Preenche o valor numérico
+      setCostValue(
+        (taskToEdit.cost || 0).toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        })
+      ); // Formata para exibição
+      setDeadline(taskToEdit.deadline || "");
     }
   }, [taskToEdit]);
 
   const handleAddTask = async () => {
     try {
-      //const response = await axios.post("http://localhost:3001/add-task", 
       const response = await axios.post("https://to-do-list-vhdd.onrender.com/add-task", {
         name: task,
-        cost: parseFloat(cost),
+        cost, // Envia o valor numérico correto
         deadline,
       });
-      onAdd(response.data); // Atualiza a lista de tarefas no Table
-      onClose(); // Fecha o modal
+      onAdd(response.data); // Atualiza a lista de tarefas na tabela
+      onClose();
     } catch (error) {
       console.error("Erro ao adicionar tarefa:", error);
     }
@@ -34,39 +43,30 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
 
   const handleSave = async () => {
     if (taskToEdit) {
-      // Edição
       try {
         const updatedTask = {
           name: task,
-          cost: parseFloat(cost),
+          cost, // Envia o valor numérico correto
           deadline,
         };
-
-        // Verificar se o nome da tarefa já existe
-        //const response = await axios.get("http://localhost:3001/tasks");
+  
         const response = await axios.get("https://to-do-list-vhdd.onrender.com/tasks");
         const taskExists = response.data.some(
           (t) => t.name === task && t.id !== taskToEdit.id
         );
-
+  
         if (taskExists) {
           alert("O nome da tarefa já existe!");
           return;
         }
-
-        // Atualizar no backend
-        //await axios.put(`http://localhost:3001/update-task/${taskToEdit.id}`, updatedTask);
+  
         await axios.put(`https://to-do-list-vhdd.onrender.com/update-task/${taskToEdit.id}`, updatedTask);
-
-        // Atualizar a lista no componente pai
         onEdit(taskToEdit.id, updatedTask);
-
-        onClose(); // Fecha o modal
+        onClose();
       } catch (error) {
         console.error("Erro ao editar tarefa:", error);
       }
     } else {
-      // Adição
       await handleAddTask();
     }
   };
@@ -119,8 +119,26 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
     setDeadline(input); // Atualizar o estado com a entrada válida
   };
   
-  
-  
+
+  // Função para tratar mudanças no input
+  // Função para tratar mudanças no input de custo
+  const handleCostChange = (event) => {
+    const rawValue = event.target.value.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
+    if (!rawValue) {
+      setCostValue(""); // Define o input como vazio se não houver números
+      setCost(0); // Define o valor de `cost` como 0
+      return;
+    }
+
+    const numberValue = parseFloat(rawValue) / 100; // Converte o valor para número
+    const formattedValue = numberValue.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+
+    setCostValue(formattedValue); // Atualiza o valor formatado para exibição
+    setCost(numberValue); // Atualiza o valor numérico
+  };
 
   return (
     <div className={styles.backdrop}>
@@ -132,11 +150,12 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
           value={task}
           onChange={(e) => setTask(e.target.value)}
         />
-        <input
-          type="number"
-          placeholder="Custo (R$)"
-          value={cost}
-          onChange={(e) => setCost(e.target.value)}
+          <input
+          type="text"
+          value={costValue} // Exibe o valor formatado
+          onChange={handleCostChange} // Atualiza o valor enquanto digita
+          className={styles.costInput}
+          placeholder="R$ 0,00" // Placeholder para exibir quando vazio
         />
          <input
           type="text"

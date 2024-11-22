@@ -6,6 +6,8 @@ import { Snackbar, Alert, Grow } from "@mui/material";
 import AddItem from "../AddItem/AddItem";
 import styles from "./Table.module.css";
 import DraggableRow from "../DraggableRow/DraggableRow";
+import { AiOutlineCheckCircle, AiOutlineClose } from "react-icons/ai";
+import { MdDeleteForever, MdModeEdit } from "react-icons/md";
 
 export default function Table() {
   const [tasks, setTasks] = useState([]);
@@ -16,6 +18,9 @@ export default function Table() {
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [deleteSnackbarOpen, setDeleteSnackbarOpen] = useState(false);// Novo estado para o snackbar de exclusão
   const [deleteSnackbarMessage, setDeleteSnackbarMessage] = useState("");
+  // Estado para o snackbar de edição
+  const [editSnackbarOpen, setEditSnackbarOpen] = useState(false);
+  const [editSnackbarMessage, setEditSnackbarMessage] = useState("");
 
   // Carregar tarefas do backend
   const fetchTasks = async () => {
@@ -125,6 +130,8 @@ export default function Table() {
                   task.id === id ? { ...task, ...updatedTask } : task
                 )
               );
+              setEditSnackbarMessage("Tarefa editada com sucesso!");
+              setEditSnackbarOpen(true);
               setShowModal(false);
             }}
             taskToEdit={taskToEdit}
@@ -142,7 +149,14 @@ export default function Table() {
           <Alert
             onClose={() => setSnackbarOpen(false)}
             severity={snackbarSeverity}
-            sx={{ width: "100%", backgroundColor: snackbarSeverity === "success" ? "#35AB54" : undefined }}
+            sx={{ width: "100%",color:'#fff', backgroundColor: snackbarSeverity === "success" ? "#35AB54" : undefined }}
+            icon={
+              snackbarSeverity === "success" ? (
+                <AiOutlineCheckCircle style={{ color: "#fff" }} />
+              ) : (
+                <AiOutlineClose style={{ color: "#fff" }} />
+              )
+            }
           >
             {snackbarMessage}
           </Alert>
@@ -159,9 +173,27 @@ export default function Table() {
           <Alert
             onClose={() => setDeleteSnackbarOpen(false)}
             severity="error" // Vermelho para erro ou exclusão
-            sx={{ width: "100%", backgroundColor: "red" }}
+            sx={{ width: "100%",color:'#fff', backgroundColor: "red" }}
+            icon={<MdDeleteForever style={{ color: "#fff" }} />}
           >
             {deleteSnackbarMessage}
+          </Alert>
+        </Snackbar>
+         {/* Snackbar para edição de tarefa */}
+         <Snackbar
+          open={editSnackbarOpen}
+          autoHideDuration={3000}
+          onClose={() => setEditSnackbarOpen(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          TransitionComponent={GrowTransition}
+        >
+          <Alert
+            onClose={() => setEditSnackbarOpen(false)}
+            severity="info"
+            sx={{ width: "100%", color: "#fff", backgroundColor: "#FFA50f" }} // Cor laranja
+            icon={<MdModeEdit style={{ color: "#fff" }} />}
+          >
+            {editSnackbarMessage}
           </Alert>
         </Snackbar>
       </section>

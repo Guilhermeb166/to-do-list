@@ -15,6 +15,7 @@ export default function DraggableRow({
 }) {
 
   const ref = useRef(null);
+  
   const [showDeleteWindow,setShowDeleteWindow] = useState(false)
   
 
@@ -50,6 +51,9 @@ export default function DraggableRow({
   const cancelDelete = () => {
     setShowDeleteWindow(false);
   };
+
+  
+
   return (
     <>
     <tr
@@ -62,7 +66,7 @@ export default function DraggableRow({
     >
       <td>{task.id}</td>
       <td>{task.name}</td>
-      <td>R$ {task.cost.toFixed(2)}</td>
+      <td>{task.cost !== undefined && task.cost !== null ? `R$ ${task.cost.toFixed(2)}` : ""}</td>
       <td>{task.deadline}</td>
       <td >
         <div className={styles.actions}> 
