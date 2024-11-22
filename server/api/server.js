@@ -118,6 +118,14 @@ app.get("/tasks", async (req, res) => {
 });
 
 // Exportar o aplicativo como manipulador
+// Exportar o aplicativo para Vercel
+if (process.env.NODE_ENV !== "production") {
+  const PORT = 3001;
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando em http://localhost:${PORT}`);
+  });
+}
+
 module.exports = app;
 // Iniciar o servidor
 /*const PORT = 3001;
