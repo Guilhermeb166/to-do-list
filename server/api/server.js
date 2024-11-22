@@ -20,7 +20,13 @@ app.use(express.json());
 // Configurar para ignorar propriedades undefined
 db.settings({ ignoreUndefinedProperties: true });
 
+// Rota para favicon.ico (para evitar erros no navegador)
 app.get("/favicon.ico", (req, res) => res.status(204));
+
+// Rota raiz para verificação da API
+app.get("/", (req, res) => {
+  res.status(200).send("API funcionando!");
+});
 
 // Adicionar uma nova tarefa
 app.post("/add-task", async (req, res) => {
@@ -135,7 +141,7 @@ app.get("/tasks", async (req, res) => {
 });
 
 // Exportar o aplicativo como manipulador
-// Exportar o aplicativo para Vercel
+// Inicializar o servidor localmente (somente fora do ambiente de produção)
 if (process.env.NODE_ENV !== "production") {
   const PORT = 3001;
   app.listen(PORT, () => {
@@ -143,6 +149,7 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
+// Exportar o aplicativo para Vercel
 module.exports = app;
 // Iniciar o servidor
 /*const PORT = 3001;
