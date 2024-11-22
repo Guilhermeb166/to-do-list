@@ -28,6 +28,11 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
   }, [taskToEdit]);
 
   const handleAddTask = async () => {
+    // Verifica se todos os campos foram preenchidos antes de adicionar
+    if (!task || !cost || !deadline) {
+      alert("Por favor, preencha todos os campos antes de adicionar uma tarefa!");
+      return; // Interrompe a execução caso algum campo esteja vazio
+    }
     try {
       const response = await axios.post("https://to-do-list-vhdd.onrender.com/add-task", {
         name: task,
