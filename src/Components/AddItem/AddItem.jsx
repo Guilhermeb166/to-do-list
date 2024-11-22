@@ -149,6 +149,7 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
           placeholder="Nome da Tarefa"
           value={task}
           onChange={(e) => setTask(e.target.value)}
+          required
         />
           <input
           type="text"
@@ -156,12 +157,14 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
           onChange={handleCostChange} // Atualiza o valor enquanto digita
           className={styles.costInput}
           placeholder="R$ 0,00" // Placeholder para exibir quando vazio
+          required
         />
          <input
           type="text"
           placeholder="Data Limite"
           value={deadline}
           onChange={handleDateChange}
+          required
         />
         <div className={styles.modalActions}>
           <button onClick={onClose}>Cancelar</button>
