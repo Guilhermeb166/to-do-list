@@ -35,4 +35,7 @@ to {
         background: url('../../../public/backgrounds/cell.jpg') no-repeat center;
         background-size: cover;
     }
+    .loading {
+        background: #000; /* Remove a imagem de fundo enquanto carrega */
+    }
 }
