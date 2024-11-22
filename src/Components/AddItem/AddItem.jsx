@@ -28,6 +28,12 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
   }, [taskToEdit]);
 
   const handleAddTask = async () => {
+    // Verificar se a data limite está no formato correto
+    const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+    if (!dateRegex.test(deadline)) {
+      alert("Formato de data incorreto. ");
+      return;
+    }
     // Verifica se todos os campos foram preenchidos antes de adicionar
     if (!task || !cost || !deadline) {
       alert("Por favor, preencha todos os campos antes de adicionar uma tarefa!");
