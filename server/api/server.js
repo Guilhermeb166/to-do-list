@@ -10,6 +10,8 @@ app.use(express.json());
 // Configurar para ignorar propriedades undefined
 db.settings({ ignoreUndefinedProperties: true });
 
+app.get("/favicon.ico", (req, res) => res.status(204));
+
 // Adicionar uma nova tarefa
 app.post("/add-task", async (req, res) => {
   try {
