@@ -2,12 +2,12 @@
     "version": 2,
     "builds": [
       {
-        "src": "api/server.js",
+        "src": "server/api/server.js",
         "use": "@vercel/node"
       }
     ],
-    "rewrites": [
-    { "source": "/favicon.ico", "destination": "/favicon.ico" }
-    
+    "routes": [
+      { "src": "/(.*)", "dest": "server/api/server.js" }
     ]
   }
+  
