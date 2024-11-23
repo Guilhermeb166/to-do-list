@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "axios"; //Biblioteca para fazer requisições HTTP.
 import styles from "./AddItem.module.css";
 
 export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
@@ -34,12 +34,18 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
       alert("Formato de data incorreto. ");
       return;
     }
-    // Verifica se todos os campos foram preenchidos antes de adicionar
-    if (!task || !cost || !deadline) {
-      alert("Por favor, preencha todos os campos antes de adicionar uma tarefa!");
-      return; // Interrompe a execução caso algum campo esteja vazio
+     // Verifica se o nome da tarefa e a data limite foram preenchidos
+    if (!task || deadline.trim() === "") {
+      alert("Por favor, preencha todos os campos obrigatórios!");
+      return;
     }
-    try {
+
+    // Verifica se o custo foi informado ou é maior ou igual a 0
+    if (cost === "") {
+      alert("Por favor, informe um valor válido para o custo!");
+      return;
+    }
+    try {//Faz uma requisição POST para adicionar a tarefa.
       const response = await axios.post("https://to-do-list-backend-gray.vercel.app/add-task", {
         name: task,
         cost, // Envia o valor numérico correto
@@ -53,24 +59,25 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
   };
 
   const handleSave = async () => {
-    if (taskToEdit) {
+    if (taskToEdit) {//Verifica se há uma tarefa em edição
       try {
-        const updatedTask = {
+        const updatedTask = {//Cria um objeto contendo os dados atualizados da tarefa obtidos dos estados do componente.
           name: task,
           cost, // Envia o valor numérico correto
           deadline,
         };
-  
+        //Faz uma requisição GET ao backend para buscar todas as tarefas existentes.
         const response = await axios.get("https://to-do-list-backend-gray.vercel.app/tasks");
+        //Verifica se já existe outra tarefa com o mesmo nome
         const taskExists = response.data.some(
           (t) => t.name === task && t.id !== taskToEdit.id
-        );
+        );//O método some retorna true se encontrar um nome duplicado e false caso contrário
   
         if (taskExists) {
           alert("O nome da tarefa já existe!");
           return;
         }
-  
+        //Faz uma requisição PUT para atualizar a tarefa no backend
         await axios.put(`https://to-do-list-backend-gray.vercel.app/update-task/${taskToEdit.id}`, updatedTask);
         onEdit(taskToEdit.id, updatedTask);
         onClose();
@@ -130,13 +137,11 @@ export default function AddItem({ onClose, onAdd, taskToEdit, onEdit }) {
     setDeadline(input); // Atualizar o estado com a entrada válida
   };
   
-
-  // Função para tratar mudanças no input
   // Função para tratar mudanças no input de custo
   const handleCostChange = (event) => {
     const rawValue = event.target.value.replace(/\D/g, ""); // Remove todos os caracteres não numéricos
-    if (!rawValue) {
-      setCostValue(""); // Define o input como vazio se não houver números
+    if (rawValue === "") {
+      setCostValue("R$ 0,00"); 
       setCost(0); // Define o valor de `cost` como 0
       return;
     }

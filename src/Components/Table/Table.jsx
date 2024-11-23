@@ -14,9 +14,11 @@ export default function Table() {
   const [showModal, setShowModal] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  //estado para snackbar de adição
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const [deleteSnackbarOpen, setDeleteSnackbarOpen] = useState(false);// Novo estado para o snackbar de exclusão
+  // Novo estado para o snackbar de exclusão
+  const [deleteSnackbarOpen, setDeleteSnackbarOpen] = useState(false);
   const [deleteSnackbarMessage, setDeleteSnackbarMessage] = useState("");
   // Estado para o snackbar de edição
   const [editSnackbarOpen, setEditSnackbarOpen] = useState(false);

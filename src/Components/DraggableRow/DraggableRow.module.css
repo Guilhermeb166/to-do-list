@@ -1,8 +1,6 @@
-.line{
-    &:active{
-        cursor: pointer;
-    }
-}
+.line:active {
+    cursor: pointer;
+  }
 th, td {
     padding: 10px;
     text-align: left;
@@ -36,13 +34,11 @@ th, td {
         gap: 15px;
 
         .icons{
-            cursor: pointer;
             font-size: 22px;
             
             &:hover{
                 transform: none;
                 transition: none;
-              
             }
         }
     }
